@@ -1,0 +1,22 @@
+{
+    "headers": {
+        "User-Agent": "DDNStool for ras/1.0.0 (ycg1024@qq.com)"
+    },
+    "comm_parm": {
+        "login_token": "00000,00000000000000000000",
+        "format": "json",
+        "lang": "en",
+        "error_on_empty": "no"
+    },
+    "record_list": {
+        "domain": "xxxx.xx"
+    },
+    "update_record": {
+        "domain": "xxxx.xx",
+        "record_id":"123456",
+        "sub_domain":"@",
+        "record_type":"A",
+        "record_line_id":"0", 
+        "value":"0.0.0.0"
+    }
+}
