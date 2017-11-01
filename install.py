@@ -10,7 +10,7 @@ sh_filenane = 'DDNStool.sh'
 
 def install_linux():
     cmd_1 = 'cd ' + path + '\n'
-    cmd_2 = 'python3 ./DDNStool.py' + '\n'
+    cmd_2 = 'python3 ./ddnstool.py' + '\n'
 
     with open(sh_filenane, mode='w') as f1:
         f1.write(cmd_1)
@@ -20,7 +20,7 @@ def install_linux():
 
 def install_win():
     cmd_1 = 'cd ' + path + '\n'
-    cmd_2 = 'python ./DDNStool.py' + '\n'
+    cmd_2 = 'python .ddnstool.py' + '\n'
 
     with open(sh_filenane, mode='w') as f1:
         f1.write(cmd_1)

@@ -99,3 +99,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+
+# user
+test.json
+ddns_config.json
+.vscode/

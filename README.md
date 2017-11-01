@@ -33,9 +33,10 @@
 git clone https://github.com/ycg1024/DDNStool.git DDNStool
 ```
 
-定位到目录，执行
+定位到目录，执行 `install.py`
 
 ```bash
+cd DDNStool
 python ./install.py # windows
 python3 ./install.py # linux
 ```
