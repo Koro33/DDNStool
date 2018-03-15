@@ -1,9 +1,12 @@
 '''
 各种获取 IP 的方法
 '''
-import socket
 import random
+import re
+import socket
+
 import requests
+
 from ddnslogger import ddns_logger
 
 
@@ -12,6 +15,13 @@ class GetIP():
 
     def __init__(self):
         self.dlog = ddns_logger('IP_logger')
+        self.headers = {
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Accept-Language': 'zh-CN,zh;q=0.9',
+            'Connection': 'keep-alive',
+            'User-Agent': r'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36'
+        }
 
     def get_ip_local(self):
         ''' 获取内网ip '''
@@ -32,24 +42,29 @@ class GetIP():
             self.dlog.info_msg('try to get ip_ex from ifconfig ...')
             with requests.session() as ipsess:
                 ip_ex_ifconfig = ipsess.get(
-                    'http://ifconfig.me/ip', timeout=12).text
+                    url='http://ifconfig.me/ip',
+                    headers=self.headers,
+                    timeout=12
+                ).text
         except Exception:
             self.dlog.warning_msg('fail to get ip_ex from ifconfig!')
             return None
         self.dlog.info_msg(
-            'get ip_ex %s from ifconfig', ip_ex_ifconfig)
+            'get ip_ex %s from ifconfig', re.sub(r'\s+', '', ip_ex_ifconfig))  # 去除空格和换行符
         return ip_ex_ifconfig
 
     def get_ip_ex_ip138(self):
         ''' get ip_ex from [ip138.com] '''
-        import lxml.html
         try:
             self.dlog.info_msg('try to get ip_ex from ip138 ...')
             with requests.session() as ipsess:
-                r = ipsess.get('http://2017.ip138.com/ic.asp', timeout=8)
+                r = ipsess.get(
+                    url='http://2017.ip138.com/ic.asp',
+                    headers=self.headers,
+                    timeout=8
+                )
                 r.encoding = 'gb2312'
-                page = lxml.html.document_fromstring(r.text)
-                ip_ex_ip138 = page.xpath("//body/center/text()")[0][7:21]
+                ip_ex_ip138 = re.findall(r'\d+.\d+.\d+.\d+', r.text)[0]
         except Exception:
             self.dlog.warning_msg('fail to get ip_ex from ip138!')
             return None
@@ -73,10 +88,10 @@ class GetIP():
         ip_ex = self.get_ip_ex_ns1()
         if ip_ex:
             return ip_ex
-        ip_ex = self.get_ip_ex_ifconfig()
+        ip_ex = self.get_ip_ex_ip138()
         if ip_ex:
             return ip_ex
-        ip_ex = self.get_ip_ex_ip138()
+        ip_ex = self.get_ip_ex_ifconfig()
         if ip_ex:
             return ip_ex
         else:

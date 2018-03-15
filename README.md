@@ -1,12 +1,10 @@
 # DDNStool for Raspberry pi
 
-## Introduction
+## 介绍
 
-`ddnstool.py` 是基于 DNSPod 服务的**动态 DNS**（DDNS）脚本，用于检测 IP 变化并更新至 DNSPod。
+`ddnstool.py` 是基于 DNSPod 服务的 **动态 DNS**（DDNS）脚本，用于检测 IP 变化并更新至 DNSPod。
 
-参考了网上流传的一些脚本，并修改使之更符合 API 规范
-
-## Features
+## 特性
 
 * 使用 DNSPod 的 [API](https://www.dnspod.cn/docs/index.html)，并有检测 API 版本的功能，防止重复错误提交导致账号被锁。
 
@@ -14,18 +12,19 @@
 
 * 详细日志记录，自动清理。
 
-## Requirements
+* 暂时只支持 Linux
 
-* python >= 3.4
+> 暂时只支持 Linux 是 Crontab 的原因，理论上 Windows 平台使用计划任务也可以实现间隔运行。
+
+## 版本要求
+
+* python >= 3.5
 * requests >= 2.18.4
-* lxml >= 4.1.0
+* python-crontab >= 2.2.8
 
-都可以通过 `pip install` 命令安装
+都可通过 `pip install` 命令安装
 
-> 其中 **lxml** 库在树莓派上通过  pip 编译安装速度比较慢（0.5 ~ 1 hour），可以通过 `sudo apt-get install python3-lxml` 来安装编译好的版本。
-
-
-## Installation & Configuration
+## 安装和配置
 
 使用 **git** 获取 DDNStool
 
@@ -37,7 +36,6 @@ git clone https://github.com/ycg1024/DDNStool.git DDNStool
 
 ```bash
 cd DDNStool
-python ./install.py # windows
 python3 ./install.py # linux
 ```
 
@@ -48,12 +46,12 @@ cp -p ./ddns_config.template.json ./ddns_config.json
 leafpad ./ddns_config.json
 ```
 
-打开的json文件按下面的说明填入，其中注释前加*的是必须要改的
+打开的json文件按下面的说明进行修改，其中注释前加*的是必须要改的
 
 ```json
 {
     "headers": {
-        "User-Agent": "DDNStool for ras/1.0.0 (ycg1024@qq.com)" // 默认不用改
+        "User-Agent": "DDNStool for ras/1.1.0 (ycg1024@qq.com)" // 默认不用改
     },
     "comm_parm": {
         "login_token": "00000,00000000000000000000", // *完整的 API Token，是由 ID,Token 组合而成的，用英文的逗号分割
@@ -75,19 +73,25 @@ leafpad ./ddns_config.json
 }
 ```
 
-使用 crontab 功能定时执行脚本，比如每10分钟执行一次
+>* "comm_parm" -> "login_token": 完整的 API Token，是由 ID,Token 组合而成的，用英文的逗号分割
+>* "record_list" -> "domain": 填入域名
+>* "update_record" -> "domain": 填入域名
+>* "update_record" -> "record_id": 填入记录id
 
-在 Terminal 中键入 crontab -e，然后在文件的最后加入
+## TODO List
 
-```bash
-*/10 * * * *  bash /home/pi/DDNStool/DDNStool.sh
-```
+[] 安装时自动获取 "update_record" 字段
 
-ps: 不要忘了给 .sh 文件加可执行属性
+## 更新
 
-```bash
-chmod +x DDNStool.sh
-```
+* **1.1.0**
+  * 简化安装步骤
+  * 修复部分IP获取方式失效的问题
+  * 去除lxml库，改用Re的方式匹配IP地址
+
+* **1.0.0**
+  * 初始版本
+  * 完成大部分功能
 
 ## License
 

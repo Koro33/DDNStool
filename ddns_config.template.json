@@ -1,6 +1,6 @@
 {
     "headers": {
-        "User-Agent": "DDNStool for ras/1.0.0 (ycg1024@qq.com)"
+        "User-Agent": "DDNStool for ras/1.1.0 (ycg1024@qq.com)"
     },
     "comm_parm": {
         "login_token": "00000,00000000000000000000",
