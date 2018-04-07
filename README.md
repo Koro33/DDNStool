@@ -80,7 +80,7 @@ leafpad ./ddns_config.json
 
 ## TODO List
 
-[] 安装时自动获取 "update_record" 字段
+- [ ] 安装时自动获取 "update_record" 字段
 
 ## 更新
 
